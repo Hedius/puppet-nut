@@ -1,9 +1,8 @@
 # @!visibility private
 class nut::cgi::config {
-
-  $conf_dir = $::nut::cgi::conf_dir
-  $group    = $::nut::cgi::group
-  $user     = $::nut::cgi::user
+  $conf_dir = $nut::cgi::conf_dir
+  $group    = $nut::cgi::group
+  $user     = $nut::cgi::user
 
   ensure_resource('group', $group, {
     ensure => present,
@@ -23,7 +22,7 @@ class nut::cgi::config {
     mode   => '0644',
   })
 
-  ::concat { "${conf_dir}/hosts.conf":
+  concat { "${conf_dir}/hosts.conf":
     owner => 0,
     group => 0,
     mode  => '0644',
@@ -38,10 +37,10 @@ class nut::cgi::config {
     content => file('nut/upsset.conf'),
   }
 
-  if $::nut::cgi::manage_vhost {
-    case $::nut::cgi::http_server {
+  if $nut::cgi::manage_vhost {
+    case $nut::cgi::http_server {
       'apache': {
-        $::nut::cgi::apache_resources.each |$type,$resources| {
+        $nut::cgi::apache_resources.each |$type,$resources| {
           $resources.each |$instance,$attributes| { # lint:ignore:variable_scope
             Resource[$type] { # lint:ignore:variable_scope
               $instance: * => $attributes;

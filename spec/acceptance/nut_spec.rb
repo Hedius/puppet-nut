@@ -30,7 +30,7 @@ describe 'nut' do
   it 'works with no errors' do
     pp = <<-EOS
       Package {
-        source => $::osfamily ? {
+        source => $facts['os']['family'] ? {
           # $::architecture fact has gone missing on facter 3.x package currently installed
           'OpenBSD' => "http://ftp.openbsd.org/pub/OpenBSD/${::operatingsystemrelease}/packages/amd64/",
           default   => undef,
@@ -39,7 +39,7 @@ describe 'nut' do
 
       include ::nut
 
-      if $::osfamily == 'RedHat' {
+      if $facts['os']['family'] == 'RedHat' {
         include ::epel
 
         Class['::epel'] -> Class['::nut']

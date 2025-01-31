@@ -1,10 +1,10 @@
 # Installs the Network UPS Tools (NUT) client.
 #
 # @example Declaring the class
-#   include ::nut::client
+#   include nut::client
 #
 # @example Using `upssched` for notifications
-#   class { '::nut::client':
+#   class { 'nut::client':
 #     use_upssched => true,
 #   }
 #
@@ -41,38 +41,37 @@
 # @param use_upssched Whether to use `upssched` for notifications or not.
 # @param user The unprivileged user used to drop root privileges.
 #
-# @see puppet_defined_types::nut::client::ups ::nut::client::ups
-# @see puppet_defined_types::nut::client::upssched ::nut::client::upssched
+# @see puppet_defined_types::nut::client::ups nut::client::ups
+# @see puppet_defined_types::nut::client::upssched nut::client::upssched
 class nut::client (
   Optional[Tuple[String, String]]                  $certident      = undef,
   Optional[Stdlib::Absolutepath]                   $certpath       = undef,
   Optional[Boolean]                                $certverify     = undef,
   Optional[Stdlib::Absolutepath]                   $cmdscript      = undef,
-  Stdlib::Absolutepath                             $conf_dir       = $::nut::params::conf_dir,
+  Stdlib::Absolutepath                             $conf_dir       = $nut::params::conf_dir,
   Optional[Integer[0]]                             $deadtime       = undef,
   Optional[Integer[0]]                             $finaldelay     = undef,
   Optional[Boolean]                                $forcessl       = undef,
-  String                                           $group          = $::nut::params::group,
+  String                                           $group          = $nut::params::group,
   Optional[Integer[0]]                             $hostsync       = undef,
   Integer[1]                                       $minsupplies    = 1,
   Optional[Integer[0]]                             $nocommwarntime = undef,
   Boolean                                          $use_upssched   = false,
   Optional[Stdlib::Absolutepath]                   $notifycmd      = $use_upssched ? {
-    true    => $::nut::params::upssched, # lint:ignore:parameter_order
+    true    => $nut::params::upssched, # lint:ignore:parameter_order
     default => undef,
   },
   Optional[Hash[Nut::Event, Tuple[Boolean, 3, 3]]] $notifyflag     = undef,
   Optional[Hash[Nut::Event, String]]               $notifymsg      = undef,
-  String                                           $package_name   = $::nut::params::client_package_name,
+  String                                           $package_name   = $nut::params::client_package_name,
   Optional[Integer[0]]                             $pollfreq       = undef,
   Optional[Integer[0]]                             $pollfreqalert  = undef,
   Optional[Integer[0]]                             $rbwarntime     = undef,
-  String                                           $service_name   = $::nut::params::client_service_name,
-  String                                           $shutdowncmd    = $::nut::params::shutdown_command,
-  Stdlib::Absolutepath                             $state_dir      = $::nut::params::state_dir,
-  String                                           $user           = $::nut::params::user,
+  String                                           $service_name   = $nut::params::client_service_name,
+  String                                           $shutdowncmd    = $nut::params::shutdown_command,
+  Stdlib::Absolutepath                             $state_dir      = $nut::params::state_dir,
+  String                                           $user           = $nut::params::user,
 ) inherits nut::params {
-
   contain nut::client::config
 
   class { 'nut::common':

@@ -1,16 +1,16 @@
 # Installs Network UPS Tools (NUT).
 #
 # @example Declaring the class
-#   include ::nut
+#   include nut
 #
 # @example Listening on local subnet
-#   class { '::nut':
+#   class { 'nut':
 #     listen => [
 #       {
-#         'address' => $::ipaddress_eth0,
+#         'address' => $facts['networking']['interfaces']['eth0']['ip'],
 #       },
 #       {
-#         'address' => $::ipaddress6_eth0,
+#         'address' => $facts['networking']['interfaces']['eth0']['ip6'],
 #       },
 #     ],
 #   }
@@ -57,11 +57,11 @@
 #   `/var/db/nut`.
 # @param user The unprivileged user used to drop root privileges.
 #
-# @see puppet_classes::nut::client ::nut::client
-# @see puppet_defined_types::nut::ups ::nut::ups
-# @see puppet_defined_types::nut::user ::nut::user
-# @see puppet_defined_types::nut::client::ups ::nut::client::ups
-# @see puppet_defined_types::nut::client::upssched ::nut::client::upssched
+# @see puppet_classes::nut::client nut::client
+# @see puppet_defined_types::nut::ups nut::ups
+# @see puppet_defined_types::nut::user nut::user
+# @see puppet_defined_types::nut::client::ups nut::client::ups
+# @see puppet_defined_types::nut::client::upssched nut::client::upssched
 class nut (
   Optional[Stdlib::Absolutepath]                   $certfile              = undef,
   Optional[Tuple[String, String]]                  $certident             = undef,
@@ -75,35 +75,34 @@ class nut (
   Optional[Integer[0]]                             $client_finaldelay     = undef,
   Optional[Boolean]                                $client_forcessl       = undef,
   Optional[Integer[0]]                             $client_hostsync       = undef,
-  Boolean                                          $client_manage_package = $::nut::params::client_manage_package,
-  Boolean                                          $client_manage_service = $::nut::params::client_manage_service,
+  Boolean                                          $client_manage_package = $nut::params::client_manage_package,
+  Boolean                                          $client_manage_service = $nut::params::client_manage_service,
   Integer[1]                                       $client_minsupplies    = 1,
   Optional[Integer[0]]                             $client_nocommwarntime = undef,
   Boolean                                          $client_use_upssched   = false,
   Optional[Stdlib::Absolutepath]                   $client_notifycmd      = $client_use_upssched ? {
-    true    => $::nut::params::upssched, # lint:ignore:parameter_order
+    true    => $nut::params::upssched, # lint:ignore:parameter_order
     default => undef,
   },
   Optional[Hash[Nut::Event, Tuple[Boolean, 3, 3]]] $client_notifyflag     = undef,
   Optional[Hash[Nut::Event, String]]               $client_notifymsg      = undef,
-  String                                           $client_package_name   = $::nut::params::client_package_name,
+  String                                           $client_package_name   = $nut::params::client_package_name,
   Optional[Integer[0]]                             $client_pollfreq       = undef,
   Optional[Integer[0]]                             $client_pollfreqalert  = undef,
   Optional[Integer[0]]                             $client_rbwarntime     = undef,
-  String                                           $client_service_name   = $::nut::params::client_service_name,
-  String                                           $client_shutdowncmd    = $::nut::params::shutdown_command,
-  Stdlib::Absolutepath                             $conf_dir              = $::nut::params::conf_dir,
-  Hash[String, String]                             $driver_packages       = $::nut::params::driver_packages,
-  String                                           $group                 = $::nut::params::group,
+  String                                           $client_service_name   = $nut::params::client_service_name,
+  String                                           $client_shutdowncmd    = $nut::params::shutdown_command,
+  Stdlib::Absolutepath                             $conf_dir              = $nut::params::conf_dir,
+  Hash[String, String]                             $driver_packages       = $nut::params::driver_packages,
+  String                                           $group                 = $nut::params::group,
   Optional[Array[Nut::Listen, 1]]                  $listen                = undef,
   Optional[Integer[1]]                             $maxage                = undef,
   Optional[Integer[1]]                             $maxconn               = undef,
-  String                                           $package_name          = $::nut::params::server_package_name,
-  String                                           $service_name          = $::nut::params::server_service_name,
-  Stdlib::Absolutepath                             $statepath             = $::nut::params::state_dir,
-  String                                           $user                  = $::nut::params::user,
+  String                                           $package_name          = $nut::params::server_package_name,
+  String                                           $service_name          = $nut::params::server_service_name,
+  Stdlib::Absolutepath                             $statepath             = $nut::params::state_dir,
+  String                                           $user                  = $nut::params::user,
 ) inherits nut::params {
-
   contain nut::install
   contain nut::config
   contain nut::service

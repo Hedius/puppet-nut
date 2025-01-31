@@ -1,6 +1,5 @@
 # @!visibility private
 class nut::params {
-
   $shutdown_command    = '/sbin/shutdown -h +0'
 
   case $facts['os']['family'] {

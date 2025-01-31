@@ -27,7 +27,6 @@ class nut::common (
   Optional[Integer[0]]                             $pollfreqalert  = undef,
   Optional[Integer[0]]                             $rbwarntime     = undef,
 ) {
-
   contain nut::common::install
   contain nut::common::config
   contain nut::common::service

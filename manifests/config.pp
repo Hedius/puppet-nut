@@ -1,24 +1,22 @@
 # @!visibility private
 class nut::config {
-
-  $certfile    = $::nut::certfile
-  $certident   = $::nut::certident
-  $certpath    = $::nut::certpath
-  $certrequest = $::nut::certrequest
-  $conf_dir    = $::nut::conf_dir
-  $group       = $::nut::group
-  $listen      = $::nut::listen
-  $maxage      = $::nut::maxage
-  $maxconn     = $::nut::maxconn
-  $statepath   = $::nut::statepath
-  $user        = $::nut::user
+  $certfile    = $nut::certfile
+  $certident   = $nut::certident
+  $certpath    = $nut::certpath
+  $certrequest = $nut::certrequest
+  $conf_dir    = $nut::conf_dir
+  $group       = $nut::group
+  $listen      = $nut::listen
+  $maxage      = $nut::maxage
+  $maxconn     = $nut::maxconn
+  $statepath   = $nut::statepath
+  $user        = $nut::user
 
   case $facts['os']['family'] {
     'RedHat': {
-
       # So udev rules take effect
       ensure_resource('exec', 'udevadm trigger', {
-        path        => $::path,
+        path        => $facts['path'],
         refreshonly => true,
       })
     }

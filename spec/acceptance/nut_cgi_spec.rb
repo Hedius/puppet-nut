@@ -28,7 +28,7 @@ describe 'nut::cgi' do
   it 'works with no errors' do
     pp = <<-EOS
       Package {
-        source => $::osfamily ? {
+        source => $facts['os']['family'] ? {
           # $::architecture fact has gone missing on facter 3.x package currently installed
           'OpenBSD' => "http://ftp.openbsd.org/pub/OpenBSD/${::operatingsystemrelease}/packages/amd64/",
           default   => undef,
@@ -37,7 +37,7 @@ describe 'nut::cgi' do
 
       include ::nut
 
-      case $::osfamily {
+      case $facts['os']['family'] {
         'RedHat': {
           include ::apache
           include ::epel
@@ -92,7 +92,7 @@ describe 'nut::cgi' do
 
       Class['::nut'] ~> Class['::nut::cgi']
 
-      if $::osfamily == 'OpenBSD' {
+      if $facts['os']['family'] == 'OpenBSD' {
 
         file { '/var/www/etc':
           ensure => directory,

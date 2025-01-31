@@ -1,24 +1,24 @@
 # Add a local or remote UPS to monitor.
 #
 # @example Monitoring a local UPS
-#   include ::nut
-#   ::nut::ups { 'sua1000i':
+#   include nut
+#   nut::ups { 'sua1000i':
 #     driver => 'usbhid-ups',
 #     port   => 'auto',
 #   }
-#   ::nut::user { 'test':
+#   nut::user { 'test':
 #     password => 'password',
 #     upsmon   => 'master',
 #   }
-#   ::nut::client::ups { 'sua1000i@localhost':
+#   nut::client::ups { 'sua1000i@localhost':
 #     user     => 'test',
 #     password => 'password',
 #     type     => 'master',
 #   }
 #
 # @example Monitoring a remote UPS
-#   include ::nut::client
-#   ::nut::client::ups { 'sua1000i@remotehost':
+#   include nut::client
+#   nut::client::ups { 'sua1000i@remotehost':
 #     user     => 'test',
 #     password => 'password',
 #     type     => 'slave',
@@ -33,8 +33,8 @@
 # @param type Is the UPS being monitored attached to the local system or not.
 # @param ups The UPS to monitor.
 #
-# @see puppet_classes::nut::client ::nut::client
-# @see puppet_defined_types::nut::client::upssched ::nut::client::upssched
+# @see puppet_classes::nut::client nut::client
+# @see puppet_defined_types::nut::client::upssched nut::client::upssched
 define nut::client::ups (
   String                                    $user,
   String                                    $password,
@@ -46,13 +46,12 @@ define nut::client::ups (
   },
   Nut::Device                               $ups        = $title,
 ) {
-
   if ! defined(Class['nut::common']) {
     fail('You must include the nut::common base class before using any nut::client defined resources')
   }
 
-  ::concat::fragment { "nut upsmon ${ups}":
+  concat::fragment { "nut upsmon ${ups}":
     content => template("${module_name}/upsmon.ups.erb"),
-    target  => "${::nut::common::conf_dir}/upsmon.conf",
+    target  => "${nut::common::conf_dir}/upsmon.conf",
   }
 }

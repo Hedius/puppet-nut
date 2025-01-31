@@ -1,10 +1,9 @@
 # @!visibility private
 class nut::client::config {
-
-  $conf_dir  = $::nut::client::conf_dir
-  $group     = $::nut::client::group
-  $state_dir = $::nut::client::state_dir
-  $user      = $::nut::client::user
+  $conf_dir  = $nut::client::conf_dir
+  $group     = $nut::client::group
+  $state_dir = $nut::client::state_dir
+  $user      = $nut::client::user
 
   group { $group:
     ensure => present,
